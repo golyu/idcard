@@ -7,9 +7,9 @@ public class ConvertUtil {
     /**
      * byte数组转字符串
      *
-     * @param bytein
+     * @param bytein   byte类型数组
      * @param addSpace 是否需要添加空格
-     * @return
+     * @return 转换后的字符串
      */
     public static String byte2HexString(byte[] bytein, boolean addSpace) {
         String string = "";
@@ -27,53 +27,20 @@ public class ConvertUtil {
     /**
      * byte数组转字符串
      *
-     * @param bytein
-     * @return
+     * @param bytein byte类型数组
+     * @return 转换后的字符串
      */
     public static String byte2HexString(byte[] bytein) {
         return byte2HexString(bytein, true);
     }
 
     /**
-     * 截取0-8的有小身份证ＩＤ
-     *
-     * @return
-     */
-    public static byte[] subString8(byte[] bytes) {
-        byte[] newBytes = new byte[8];
-        for (int i = 0; i < 8; i++) {
-            newBytes[i] = bytes[i];
-        }
-        return newBytes;
-    }
-
-    /**
-     * 截图8个有效的身份证ID
-     *
-     * @param bytes 从流中读到的byte
-     * @return　有效的8个
-     */
-    public static byte[] subString8(byte[] bytes, int end) {
-        byte[] newBytes = new byte[8];
-        if (end > 7) {
-            int index = 7;
-            for (int i = end - 1; i >= 0; i--) {
-                newBytes[index] = bytes[i];
-                if (index == 0)
-                    break;
-                index--;
-            }
-        }
-        return newBytes;
-    }
-
-    /**
      * byte数组转字符串
      *
-     * @param bytein
-     * @param length
+     * @param bytein   byte类型数组
+     * @param length   需要转换的长度，长度后面的数据丢掉
      * @param addSpace 是否需要添加空格
-     * @return
+     * @return 转换后的字符串
      */
     public static String byte2HexString(byte[] bytein, int length, boolean addSpace) {
         String string = "";
@@ -92,9 +59,9 @@ public class ConvertUtil {
     /**
      * byte数组转字符串
      *
-     * @param bytein
-     * @param length
-     * @return
+     * @param bytein byte类型数组
+     * @param length 需要转换的长度，长度后面的数据丢掉
+     * @return 转换后的字符串
      */
     public static String byte2HexString(byte[] bytein, int length) {
         return byte2HexString(bytein, length, true);

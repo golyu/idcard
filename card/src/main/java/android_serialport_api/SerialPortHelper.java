@@ -6,12 +6,11 @@ import java.util.HashMap;
 
 /**
  * @author lvzhongyi
- * @description 串口帮助类，用来得到、保存和关闭串口，并使用hashMap来缓存串口
- * @date 2015/10/28 0028
- * @email 1179524193@qq.cn
+ *         description 串口帮助类，用来得到、保存和关闭串口，并使用hashMap来缓存串口
+ *         date 2015/10/28 0028
+ *         email 1179524193@qq.cn
  */
-public class SerialPortHelper {
-
+public class SerialPortHelper implements SerialPortPath {
 
     private static final HashMap<String, SerialPort> portMap = new HashMap<>();
 
@@ -19,8 +18,8 @@ public class SerialPortHelper {
      * 打开串口得到对象,默认创建新的串口对象
      *
      * @param baudrate 波特率
-     * @param path     串口的路径，{@link SerialPort.ttyMT0}or {@link SerialPort.ttyMT1}or{@link SerialPort.ttyMT2}or{@link
-     *                 SerialPort.ttyMT3}or{@link SerialPort.ttyS0}or{@link SerialPort.ttyS1}or{@link SerialPort.ttyS2}or{@link SerialPort.ttyS3}
+     * @param path     串口的路径，{@link #ttyMT0}or {@link #ttyMT1}or{@link #ttyMT2}or{@link
+     *                 #ttyMT3}or{@link #ttyS0}or{@link #ttyS1}or{@link #ttyS2}or{@link #ttyS3}
      * @return
      */
     public static SerialPort getSerialPort(int baudrate, String path) {
@@ -31,8 +30,8 @@ public class SerialPortHelper {
      * 打开串口得到对象，如果已经存在指定串口的对象，根据isNew来决定需不需要新的串口对象
      *
      * @param baudrate 波特率
-     * @param path     串口的路径，{@link SerialPort.ttyMT0}or {@link SerialPort.ttyMT1}or{@link SerialPort.ttyMT2}or{@link
-     *                 SerialPort.ttyMT3}or{@link SerialPort.ttyS0}or{@link SerialPort.ttyS1}or{@link SerialPort.ttyS2}or{@link SerialPort.ttyS3}
+     * @param path     串口的路径，{@link #ttyMT0}or {@link #ttyMT1}or{@link #ttyMT2}or{@link
+     *                 #ttyMT3}or{@link #ttyS0}or{@link #ttyS1}or{@link #ttyS2}or{@link #ttyS3}
      * @param isNew    true 新的串口对象
      * @return
      */
@@ -57,8 +56,8 @@ public class SerialPortHelper {
     /**
      * 关闭串口
      *
-     * @param path 串口的路径，{@link SerialPort.ttyMT0}or {@link SerialPort.ttyMT1}or{@link SerialPort.ttyMT2}or{@link
-     *             SerialPort.ttyMT3}or{@link SerialPort.ttyS0}or{@link SerialPort.ttyS1}or{@link SerialPort.ttyS2}or{@link SerialPort.ttyS3}
+     * @param path 串口的路径，{@link #ttyMT0}or {@link #ttyMT1}or{@link #ttyMT2}or{@link
+     *             #ttyMT3}or{@link #ttyS0}or{@link #ttyS1}or{@link #ttyS2}or{@link #ttyS3}
      */
     public static void closeSerialPort(String path) {
         SerialPort serialPort = portMap.get(path);

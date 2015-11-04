@@ -11,12 +11,13 @@ import com.lv.tools.ReadInfoResult;
 
 import android_serialport_api.SerialPort;
 import android_serialport_api.SerialPortHelper;
+import android_serialport_api.SerialPortPath;
 
 /**
  * @author lvzhongyi iccard项目的示例
- * @description
- * @date 2015/11/3 0003
- * @email 1179524193@qq.cn
+ * description
+ * date 2015/11/3 0003
+ * email 1179524193@qq.cn
  */
 public class SimpleActivity extends AppCompatActivity {
 
@@ -31,7 +32,7 @@ public class SimpleActivity extends AppCompatActivity {
      */
     public SerialPort getSerialPort() {
         //波特率   串口号     是否new一个新的，false则从缓存中找
-        return SerialPortHelper.getSerialPort(115200, SerialPort.ttyMT3, true);
+        return SerialPortHelper.getSerialPort(115200, SerialPortPath.ttyMT3, true);
     }
 
     /**
@@ -60,6 +61,10 @@ public class SimpleActivity extends AppCompatActivity {
      */
     public void readIDCardId() {
         CardHelper.getCardId(getSerialPort(), 30, new ReadIdResult() {
+            /**
+             *
+             * @param cardId
+             */
             @Override
             public void onSuccess(String cardId) {
                 //成功

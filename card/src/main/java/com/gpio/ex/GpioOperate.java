@@ -10,9 +10,9 @@ package com.gpio.ex;
 
 /**
  * @author lvzhongyi
- * @description 加载gpio口操作的jni
- * @date 2015/10/28 0028
- * @email 1179524193@qq.cn
+ * description 加载gpio口操作的jni
+ * date 2015/10/28 0028
+ * email 1179524193@qq.cn
  */
 class GpioOperate {
     /**

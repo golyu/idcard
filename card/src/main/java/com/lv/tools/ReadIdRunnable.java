@@ -6,9 +6,9 @@ import android_serialport_api.SerialPort;
 
 /**
  * @author lvzhongyi
- * @description 读取卡iD的线程
- * @date 2015/10/23 0023
- * @email 1179524193@qq.cn
+ * description 读取卡iD的线程
+ * date 2015/10/23 0023
+ * email 1179524193@qq.cn
  */
 public class ReadIdRunnable implements Runnable {
     private long startTime;//开始时间

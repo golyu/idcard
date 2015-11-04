@@ -7,9 +7,9 @@ import android_serialport_api.SerialPort;
 
 /**
  * @author lvzhongyi
- * @description 读卡信息的帮助类
- * @date 2015/10/23 0023
- * @email 1179524193@qq.cn
+ * description 读卡信息的帮助类
+ * date 2015/10/23 0023
+ * email 1179524193@qq.cn
  */
 public class CardHelper {
     private static final ExecutorService SERVICE = Executors.newSingleThreadExecutor();

@@ -3,7 +3,6 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
-    resourcePrefix "lv"	//这个随便填
     defaultConfig {
         minSdkVersion 10
         targetSdkVersion 23
@@ -20,31 +19,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'org.litepal.android:core:1.3.0'
 }
+apply from: "https://raw.githubusercontent.com/xiaopansky/android-library-publish-to-jcenter/master/bintrayUpload.gradle"
+//apply from: "bintrayUpload.gradle"
 
-ext {
-    bintrayRepo = 'maven'
-    bintrayName = 'id-card'
-
-    publishedGroupId = 'org.lvtools.idcard' // Maven Group ID for the artifact，一般填你唯一的包名
-    libraryName = 'card'
-    artifact = 'id-card'
-
-    libraryDescription = 'Easy access to identity information library'
-
-    siteUrl = 'https://github.com/lvzhongyi/idcard'      // 项目的主页
-    gitUrl = 'https://github.com/lvzhongyi/idcard.git'   // Git仓库的url
-
-    libraryVersion = '1.0'
-
-    developerId = 'lvzhongyi'
-    developerName = 'zhognyi.lv'
-    developerEmail = 'lvzhongyiforchrome@gmail.com'
-
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
-}
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'

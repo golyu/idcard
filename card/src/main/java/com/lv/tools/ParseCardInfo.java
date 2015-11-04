@@ -14,12 +14,18 @@ import java.io.IOException;
 
 /**
  * @author lvzhongyi
- * @description 用来解析整个身份证信息的类
- * @date 2015/10/23 0023
- * @email 1179524193@qq.cn
+ *         description 用来解析整个身份证信息的类
+ *         date 2015/10/23 0023
+ *         email 1179524193@qq.cn
  */
 public class ParseCardInfo {
-
+    /**
+     * 解析身份证信息
+     *
+     * @param readResult 从读卡器中读取到的原始byte数据
+     * @return {@link IDCard}返回一个对象
+     * @throws Exception 解析错误的异常
+     */
     public static IDCard parse(byte[] readResult) throws Exception {
         IDCard idCard = new IDCard();
         short textlen = (short) (readResult[0] * 256 + readResult[1]);
@@ -71,7 +77,13 @@ public class ParseCardInfo {
         return idCard;
     }
 
-
+    /**
+     * 将加密的照片byte数据通过jni解析
+     *
+     * @param wlt 解密前
+     * @return 解密后
+     * @throws RemoteException 解密错误
+     */
     public static byte[] decode(byte[] wlt) throws RemoteException {
 //        String bmpPath = "/data/data/com.cjy.filing/files/photo.bmp";
 //        String wltPath = "/data/data/com.cjy.filing/files/photo.wlt";
@@ -94,7 +106,7 @@ public class ParseCardInfo {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        DecodeWlt dw  = new DecodeWlt();
+        DecodeWlt dw = new DecodeWlt();
 
         int result = dw.Wlt2Bmp(wltPath, bmpPath);
         byte[] buffer = null;

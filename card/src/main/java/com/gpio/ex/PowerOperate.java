@@ -10,9 +10,9 @@ package com.gpio.ex;
 
 /**
  * @author lvzhongyi
- * @description 拉高和拉低相应的GPIO口来实现电流控制，控制给读ID的模块通电或者读身份证信息的模块通电
- * @date 2015/10/28 0028
- * @email 1179524193@qq.cn
+ * description 拉高和拉低相应的GPIO口来实现电流控制，控制给读ID的模块通电或者读身份证信息的模块通电
+ * date 2015/10/28 0028
+ * email 1179524193@qq.cn
  */
 public class PowerOperate {
 

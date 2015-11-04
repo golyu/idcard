@@ -2,16 +2,15 @@ package com.lv.tools;
 
 import android.graphics.Bitmap;
 
-import org.litepal.crud.DataSupport;
-
 
 /**
  * @author lvzhongyi
- * @description
- * @date 2015/10/23 0023
- * @email 1179524193@qq.cn
+ * description
+ * date 2015/10/23 0023
+ * email 1179524193@qq.cn
  */
-public class IDCard extends DataSupport {
+public class IDCard{
+    private int id;
     private String cardId; //卡id
     private String name;//姓名
     private String sex; //性别
@@ -26,7 +25,13 @@ public class IDCard extends DataSupport {
     protected Bitmap photo; // bitmap格式照片
     private String photoBase64; //base64格式的bitmap
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getCardId() {
         return cardId;

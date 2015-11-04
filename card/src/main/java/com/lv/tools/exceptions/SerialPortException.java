@@ -2,9 +2,9 @@ package com.lv.tools.exceptions;
 
 /**
  * @author lvzhongyi
- * @description 串口读取数据异常类
- * @date 2015/10/23 0023
- * @email 1179524193@qq.cn
+ * description 串口读取数据异常类
+ * date 2015/10/23 0023
+ * email 1179524193@qq.cn
  */
 public class SerialPortException extends RuntimeException {
     /**

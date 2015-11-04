@@ -2,9 +2,9 @@ package com.lv.tools;
 
 /**
  * @author lvzhongyi
- * @description 读卡id结果
- * @date 2015/10/23 0023
- * @email 1179524193@qq.cn
+ * description 读卡id结果
+ * date 2015/10/23 0023
+ * email 1179524193@qq.cn
  */
 public interface ReadIdResult {
     int ERROR_PORT = 0;    //串口错误
@@ -14,7 +14,7 @@ public interface ReadIdResult {
     /**
      * 扫描成功，返回卡体管理号
      *
-     * @param cardId
+     * @param cardId    卡体id号码
      */
     void onSuccess(String cardId);
 

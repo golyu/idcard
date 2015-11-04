@@ -32,15 +32,6 @@ public class SerialPort {
      */
     public static final String TAG = "SerialPort";
 
-    public static final String ttyS0 = "/dev/ttyS0";
-    public static final String ttyS1 = "/dev/ttyS1";
-    public static final String ttyS2 = "/dev/ttyS2";
-    public static final String ttyS3 = "/dev/ttyS3";
-    public static final String ttyMT0 = "/dev/ttyMT0";
-    public static final String ttyMT1 = "/dev/ttyMT1";
-    public static final String ttyMT2 = "/dev/ttyMT2";
-    public static final String ttyMT3 = "/dev/ttyMT3";
-
     /*
      * Do not remove or rename the field mFd: it is used by native method close();
      */

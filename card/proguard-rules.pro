@@ -79,10 +79,10 @@
 -keep public class android_serialport_api.SerialPortHelper{
     public *;
 }
--keep public class com.synjones.bluetooth.DecodeWlt{
+-keep public class android_serialport_api.SerialPortPath{
     *;
 }
--keep class org.litepal.**{
+-keep public class com.synjones.bluetooth.DecodeWlt{
     *;
 }
 

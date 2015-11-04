@@ -2,9 +2,9 @@ package com.lv.tools;
 
 /**
  * @author lvzhongyi
- * @description 得到命令
- * @date 2015/10/23 0023
- * @email 1179524193@qq.cn
+ * description 得到命令
+ * date 2015/10/23 0023
+ * email 1179524193@qq.cn
  */
 public class Cmd {
     /**

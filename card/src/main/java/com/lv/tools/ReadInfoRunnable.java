@@ -10,9 +10,9 @@ import android_serialport_api.SerialPort;
 
 /**
  * @author lvzhongyi
- * @description 读取卡信息的线程
- * @date 2015/10/23 0023
- * @email 1179524193@qq.cn
+ *         description 读取卡信息的线程
+ *         date 2015/10/23 0023
+ *         email 1179524193@qq.cn
  */
 public class ReadInfoRunnable implements Runnable {
     private long startTime;//开始时间
@@ -99,6 +99,7 @@ public class ReadInfoRunnable implements Runnable {
     /**
      * 寻卡
      *
+     * @return true》》成功，false》》失败
      * @throws IOException
      */
     private boolean findCard() throws IOException {
@@ -115,7 +116,7 @@ public class ReadInfoRunnable implements Runnable {
     /**
      * 选卡
      *
-     * @return
+     * @return true》》成功，false》》失败
      * @throws IOException
      */
     private boolean selectCard() throws IOException {
@@ -146,7 +147,7 @@ public class ReadInfoRunnable implements Runnable {
      *
      * @param cmd         命令
      * @param resultLeght 返回结果的长度
-     * @return
+     * @return 收集到的数据
      * @throws IOException
      */
     private synchronized byte[] sendCmd(byte[] cmd, int resultLeght) throws IOException {
@@ -181,7 +182,8 @@ public class ReadInfoRunnable implements Runnable {
 //                e.printStackTrace();
 //            }
             long take = System.currentTimeMillis() - readStartTime;
-            if ((take > 3000) || ((index > 5) && (data[0] != (byte) 0xAA || data[1] != (byte) 0xAA || data[2] != (byte) 0xAA || data[3] != (byte) 0x96 || data[4] != (byte) 0x69))) {
+            if ((take > 3000) || ((index > 5) && (data[0] != (byte) 0xAA || data[1] != (byte) 0xAA || data[2] != (byte) 0xAA || data[3] != (byte)
+                    0x96 || data[4] != (byte) 0x69))) {
 //                Log.v("card", "进入eroor" + take + ">>" + ConvertUtil.byte2HexString(data));
                 return Cmd.ERROR_UNKOWN;
             }
@@ -205,7 +207,7 @@ public class ReadInfoRunnable implements Runnable {
     /**
      * 清理串口数据
      *
-     * @param in
+     * @param in 串口输入流
      */
     private void clearSerialPortData(InputStream in) throws IOException {
         while (in.available() > 0)

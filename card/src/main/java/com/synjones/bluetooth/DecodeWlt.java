@@ -2,9 +2,9 @@ package com.synjones.bluetooth;
 
 /**
  * @author lvzhongyi
- * @description
- * @date 2015/10/23 0023
- * @email 1179524193@qq.cn
+ * description
+ * date 2015/10/23 0023
+ * email 1179524193@qq.cn
  */
 public class DecodeWlt {
     static {

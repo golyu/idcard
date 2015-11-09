@@ -3,7 +3,13 @@
     *   idcard中已经包含了串口工具类，便捷的生成串口对象和缓存串口对象    
     *   idcard类中包含电源管理工具类，不过这个要硬件支持。
     *
-    
+## 如果使用Android studio开发，可以直接
+```java
+    dependencies {
+            compile fileTree(include: ['*.jar'], dir: 'libs')
+            compile 'com.lvzhongyi.library:card:1.0.0'
+    }
+```
 ##  代码示例
 ```java
       /**

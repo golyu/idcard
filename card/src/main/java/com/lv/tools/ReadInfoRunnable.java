@@ -14,7 +14,7 @@ import android_serialport_api.SerialPort;
  *         date 2015/10/23 0023
  *         email 1179524193@qq.cn
  */
-public class ReadInfoRunnable implements Runnable {
+public class ReadInfoRunnable extends ReadRunnableControl implements Runnable {
     private long startTime;//开始时间
     private final SerialPort serialPort;  //串口对象
     private final ReadInfoResult readInfoResult;    //返回结果对象
@@ -42,6 +42,9 @@ public class ReadInfoRunnable implements Runnable {
             if ((System.currentTimeMillis() - startTime) > (outTime * 1000)) {
                 readInfoResult.onFailure(ReadInfoResult.ERROR_TIMEOUT);
 //                Log.v("card_id", "时间到");
+                break;
+            }
+            if (stop) {
                 break;
             }
             try {
@@ -175,14 +178,16 @@ public class ReadInfoRunnable implements Runnable {
         int index = 0;
 //        Log.v("card", "开始读");
 
-        while (serialPort.getInputStream().available() > 0 || (index < 7) || (index > 7 && (index < data[5] * 256 + data[6] + 7))) {
+        while (serialPort.getInputStream().available() > 0 || (index < 7) || (index > 7 && (index < data[5] * 256 +
+                data[6] + 7))) {
 //            try {
 //                Thread.sleep(200);
 //            } catch (InterruptedException e) {
 //                e.printStackTrace();
 //            }
             long take = System.currentTimeMillis() - readStartTime;
-            if ((take > 3000) || ((index > 5) && (data[0] != (byte) 0xAA || data[1] != (byte) 0xAA || data[2] != (byte) 0xAA || data[3] != (byte)
+            if ((take > 3000) || ((index > 5) && (data[0] != (byte) 0xAA || data[1] != (byte) 0xAA || data[2] !=
+                    (byte) 0xAA || data[3] != (byte)
                     0x96 || data[4] != (byte) 0x69))) {
 //                Log.v("card", "进入eroor" + take + ">>" + ConvertUtil.byte2HexString(data));
                 return Cmd.ERROR_UNKOWN;
@@ -213,4 +218,6 @@ public class ReadInfoRunnable implements Runnable {
         while (in.available() > 0)
             serialPort.getInputStream().read();
     }
+
+
 }

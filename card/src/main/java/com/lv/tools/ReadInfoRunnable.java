@@ -209,15 +209,4 @@ public class ReadInfoRunnable extends ReadRunnableControl implements Runnable {
         return result;
     }
 
-    /**
-     * 清理串口数据
-     *
-     * @param in 串口输入流
-     */
-    private void clearSerialPortData(InputStream in) throws IOException {
-        while (in.available() > 0)
-            serialPort.getInputStream().read();
-    }
-
-
 }

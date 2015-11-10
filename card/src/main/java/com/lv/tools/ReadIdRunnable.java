@@ -2,6 +2,8 @@ package com.lv.tools;
 
 import com.lv.tools.exceptions.SerialPortException;
 
+import java.io.IOException;
+
 import android_serialport_api.SerialPort;
 
 /**
@@ -35,6 +37,16 @@ public class ReadIdRunnable extends ReadRunnableControl implements Runnable {
     @Override
     public void run() {
         byte[] data = new byte[12];
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+
+        }
+        try {
+            clearSerialPortData(serialPort.getInputStream());
+        } catch (IOException e) {
+
+        }
         while (true) {
             if ((System.currentTimeMillis() - startTime) > (outTime * 1000)) {
                 readResult.onFailure(ReadIdResult.ERROR_TIMEOUT);

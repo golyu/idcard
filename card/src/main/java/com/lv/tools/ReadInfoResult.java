@@ -13,6 +13,14 @@ public interface ReadInfoResult {
     int ERROR_UNKNOWN = 3; //未知错误
 
     /**
+     * 开始寻卡
+     * <p>
+     * 因为上位机和下位机的配合问题，该回调方法可能会被多次调用，在该回调方法中，
+     * UI操作要尽量少，避免UI线程阻塞造成卡顿感，对UI操作最好先进行判断
+     * </p>
+      */
+    void onFindCard();
+    /**
      * 扫描成功，返回卡体信息
      *
      * @param idCard 卡体id号码

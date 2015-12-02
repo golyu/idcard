@@ -12,7 +12,7 @@ import android_serialport_api.SerialPort;
  *         date 2015/10/23 0023
  *         email 1179524193@qq.cn
  */
-public class ReadIdRunnable extends ReadRunnableControl implements Runnable {
+public class ReadIdRunnable extends ReadRunnableControl{
     private long startTime;//开始时间
     private SerialPort serialPort;  //串口对象
     private final ReadIdResult readResult;    //返回结果对象

@@ -82,6 +82,12 @@ public class SimpleActivity extends AppCompatActivity {
      */
     public void readIDCardInfo() {
         CardHelper.getCardInfo(getSerialPort(), 30, new ReadInfoResult() {
+
+            @Override
+            public void onFindCard() {
+                //开始寻卡
+            }
+
             @Override
             public void onSuccess(IDCard idCard) {
                 //成功

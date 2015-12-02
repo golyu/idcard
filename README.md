@@ -7,7 +7,7 @@
 ```java
     dependencies {
             compile fileTree(include: ['*.jar'], dir: 'libs')
-            compile 'com.lvzhongyi.library:card:1.1.2'
+            compile 'com.lvzhongyi.library:card:1.1.3'
     }
 ```
 ##  代码示例
@@ -64,6 +64,17 @@
        */
       public void readIDCardInfo() {
           CardHelper.getCardInfo(getSerialPort(), 30, new ReadInfoResult() {
+              @Override
+              public void onFindCard() {
+                  //开始寻卡
+                  /**
+                   * 开始寻卡
+                   * <p>
+                   * 因为上位机和下位机的配合问题，该回调方法可能会被多次调用，在该回调方法中，
+                   * UI操作要尽量少，避免UI线程阻塞造成卡顿感，对UI操作最好先进行判断
+                   * </p>
+                    */
+              }
               @Override
               public void onSuccess(IDCard idCard) {
                   //成功

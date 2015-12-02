@@ -9,7 +9,7 @@ import java.io.InputStream;
  *         date 2015/10/23 0023
  *         email 1179524193@qq.cn
  */
-public abstract class ReadRunnableControl {
+public abstract class ReadRunnableControl implements Runnable  {
     boolean stop = false;
 
     /**

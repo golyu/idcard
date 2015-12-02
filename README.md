@@ -7,7 +7,7 @@
 ```java
     dependencies {
             compile fileTree(include: ['*.jar'], dir: 'libs')
-            compile 'com.lvzhongyi.library:card:1.1.3'
+            compile 'com.lvzhongyi.library:card:1.1.4'
     }
 ```
 ##  代码示例

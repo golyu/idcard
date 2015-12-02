@@ -50,8 +50,10 @@ public class ReadInfoRunnable extends ReadRunnableControl {
             try {
                 readInfoResult.onFindCard();
                 if (findCard()) {
+                    readInfoResult.onFindCardSuccess();
 //                    Log.v("card_id", "寻卡成功");
                     if (selectCard()) {
+                        readInfoResult.onSelectCardSuccess();
 //                        Log.v("card_id", "选卡成功");
                         byte[] result = readCard();
                         if (result == null || result.length < 11) {

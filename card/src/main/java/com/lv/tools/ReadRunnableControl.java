@@ -15,7 +15,7 @@ public abstract class ReadRunnableControl implements Runnable  {
     /**
      * 停止线程
      */
-    public void setStop() {
+    public synchronized void setStop() {
         this.stop = true;
     }
 
@@ -25,7 +25,7 @@ public abstract class ReadRunnableControl implements Runnable  {
      * @param in 串口输入流
      */
     public void clearSerialPortData(InputStream in) throws IOException {
-        byte[] z = new byte[1024];
+        byte[] z = new byte[1300];
         while (in.available() > 0) {
             in.read(z);
             try {

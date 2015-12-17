@@ -62,6 +62,7 @@ public class ReadIdRunnable extends ReadRunnableControl{
                         String result = ConvertUtil.byte2HexString(data, false).trim();
                         if (!result.equals("C9EDB7DDD6A4CBA2BFA8B0E5") && !result.equals("B3CCD0F2B3F5CABCBBAFCDEA")) {
                             readResult.onSuccess(result);
+                            setStop();
                             break;
                         }
                     }

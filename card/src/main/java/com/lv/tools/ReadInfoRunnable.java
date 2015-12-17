@@ -1,9 +1,10 @@
 package com.lv.tools;
 
+import android.util.Log;
+
 import com.lv.tools.exceptions.SerialPortException;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 
 import android_serialport_api.SerialPort;
@@ -16,7 +17,7 @@ import android_serialport_api.SerialPort;
  */
 public class ReadInfoRunnable extends ReadRunnableControl {
     private long startTime;//开始时间
-    private final SerialPort serialPort;  //串口对象
+    private SerialPort serialPort;  //串口对象
     private final ReadInfoResult readInfoResult;    //返回结果对象
     private int outTime;    //超时时间，秒
 
@@ -39,12 +40,19 @@ public class ReadInfoRunnable extends ReadRunnableControl {
     @Override
     public void run() {
         while (true) {
+            if (stop) {
+                Log.v("xxxxx", "stop");
+                break;
+            }
+            Log.v("xxxxx", "info");
+//            try {
+//                Thread.sleep(300);
+//            } catch (InterruptedException e) {
+//
+//            }
             if ((System.currentTimeMillis() - startTime) > (outTime * 1000)) {
                 readInfoResult.onFailure(ReadInfoResult.ERROR_TIMEOUT);
 //                Log.v("card_id", "时间到");
-                break;
-            }
-            if (stop) {
                 break;
             }
             try {
@@ -60,7 +68,7 @@ public class ReadInfoRunnable extends ReadRunnableControl {
 //                            Log.v("card_id", "结果为空");
                         } else if (Arrays.equals(result, Cmd.READ_CARD_INFO_FAILURE_CMD)) {
 //                            Log.v("card_id", "读卡失败");
-                        } else if (Arrays.equals(result, Cmd.ERROR_UNKOWN)) {
+                        } else if (Arrays.equals(result, Cmd.ERROR_UNKOWN_CMD)) {
 //                            Log.v("card_id", "未知错误");
                             /**
                              * 清理串口
@@ -81,13 +89,16 @@ public class ReadInfoRunnable extends ReadRunnableControl {
                             //Log.i("串口调试", "basemsg="+basemsg.length);
                             try {
                                 IDCard idCard = ParseCardInfo.parse(waitParse);
+                                setStop();
                                 readInfoResult.onSuccess(idCard);
 //                                Log.v("card_id", "" + ConvertUtil.byte2HexString(result));
+                                return;
                             } catch (Exception e) {
                                 readInfoResult.onFailure(ReadInfoResult.ERROR_PARSE);
+                                return;
                             }
 //                            Log.v("card_id", "读卡成功");
-                            return;
+
                         }
                     } else {
 //                        Log.v("card_id", "选卡失败");
@@ -103,20 +114,44 @@ public class ReadInfoRunnable extends ReadRunnableControl {
     }
 
     /**
+     * 读卡器复位
+     *
+     * @return true》》成功，false》》失败
+     * @throws IOException
+     */
+    private boolean samReset() throws IOException {
+        Log.v("card", "开始复位");
+        byte[] result = sendCmd(Cmd.SAM_RESET_CMD, Cmd.SAM_RESET_SUCCESS_CMD.length);
+        if (Arrays.equals(result, Cmd.SAM_RESET_SUCCESS_CMD)) {
+            Log.v("card", "复位成功"+ConvertUtil.byte2HexString(result));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return true;
+        } else {
+            Log.v("card", "复位失败"+ConvertUtil.byte2HexString(result));
+            return false;
+        }
+    }
+
+    /**
      * 寻卡
      *
      * @return true》》成功，false》》失败
      * @throws IOException
      */
     private boolean findCard() throws IOException {
-//        Log.v("card_id", "开始寻卡");
-        byte[] result = sendCmd(Cmd.FIND_CARD_CMD, Cmd.FIND_CARD_SUCCEESS_CMD.length);
-//        Log.v("card_id", ConvertUtil.byte2HexString(result));
-        if (Arrays.equals(result, Cmd.FIND_CARD_SUCCEESS_CMD))
+        Log.v("card_id", "开始寻卡");
+        byte[] result = sendCmd(Cmd.FIND_CARD_CMD, Cmd.FIND_CARD_SUCCESS_CMD.length);
+        Log.v("card_id", ConvertUtil.byte2HexString(result));
+        if (Arrays.equals(result, Cmd.FIND_CARD_SUCCESS_CMD)) {
             return true;
-        else
+        } else {
+            samReset();
             return false;
-
+        }
     }
 
     /**
@@ -127,9 +162,9 @@ public class ReadInfoRunnable extends ReadRunnableControl {
      */
     private boolean selectCard() throws IOException {
 //        Log.v("card_id", "开始选卡");
-        byte[] result = sendCmd(Cmd.SELECT_CARD_CMD, Cmd.SELECT_CARD_SUCCEED_CMD.length);
+        byte[] result = sendCmd(Cmd.SELECT_CARD_CMD, Cmd.SELECT_CARD_SUCCESS_CMD.length);
 //        Log.v("card_id", ConvertUtil.byte2HexString(result));
-        if (Arrays.equals(result, Cmd.SELECT_CARD_SUCCEED_CMD))
+        if (Arrays.equals(result, Cmd.SELECT_CARD_SUCCESS_CMD))
             return true;
         else
             return false;
@@ -171,7 +206,7 @@ public class ReadInfoRunnable extends ReadRunnableControl {
          */
         serialPort.getOutputStream().write(cmd);
         try {
-            Thread.sleep(300);
+            Thread.sleep((long) (Math.random()*200+300));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -180,7 +215,7 @@ public class ReadInfoRunnable extends ReadRunnableControl {
         //data的下标
         int index = 0;
 //        Log.v("card", "开始读");
-
+//        Log.v("card", "" + serialPort.getInputStream().available());
         while (serialPort.getInputStream().available() > 0 || (index < 7) || (index > 7 && (index < data[5] * 256 +
                 data[6] + 7))) {
 //            try {
@@ -193,7 +228,7 @@ public class ReadInfoRunnable extends ReadRunnableControl {
                     (byte) 0xAA || data[3] != (byte)
                     0x96 || data[4] != (byte) 0x69))) {
 //                Log.v("card", "进入eroor" + take + ">>" + ConvertUtil.byte2HexString(data));
-                return Cmd.ERROR_UNKOWN;
+                return Cmd.ERROR_UNKOWN_CMD;
             }
             if (serialPort.getInputStream().available() > 0) {
                 int dataSize = serialPort.getInputStream().read(temp);

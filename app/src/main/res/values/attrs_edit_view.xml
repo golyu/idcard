@@ -1,0 +1,16 @@
+<resources>
+    <declare-styleable name="EditView">
+        <attr name="editString" format="string" />
+
+        <attr name="imageWidth" format="dimension" />
+        <attr name="imageMargin" format="dimension" />
+
+        <attr name="isPassword" format="boolean" />
+
+        <attr name="editWidth" format="dimension" />
+        <attr name="editHeight" format="dimension" />
+
+        <attr name="defaultDrawable" format="color|reference" />
+        <attr name="focusedDrawable" format="color|reference" />
+    </declare-styleable>
+</resources>

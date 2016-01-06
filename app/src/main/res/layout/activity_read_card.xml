@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.ccd.filing.test.view.ReadCardActivity">
+
+
+
+    <LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/commond_background"
+        android:orientation="vertical"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        <include
+            layout="@layout/toolbar"/>
+        <com.ccd.filing.test.view.custom.CardView
+            android:id="@+id/card_positive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardDimension="300dp"
+            app:cardDrawable="@mipmap/card_positive"
+            app:cardString="自定义view"/>
+        <ImageView
+            android:id="@+id/readCardHint"
+            android:layout_gravity="center"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/idcard_hint_find"
+            />
+        <com.ccd.filing.test.view.custom.CardNegativeView
+            android:id="@+id/card_negative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardDrawable="@mipmap/card_negative"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID:"
+                android:textColor="@color/icons"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/card_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/icons"
+                android:textSize="20sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <com.example.lv.progressbutton.CircularProgressButton
+                android:id="@+id/read_id_view"
+                style="@style/CircularProgressButtonTheme"
+                android:layout_gravity="center"
+                app:cpb_cornerRadius="5dp"
+                app:cpb_paddingProgress="10dp"
+                app:cpb_textComplete="成功"
+                app:cpb_textError="失败"
+                app:cpb_colorIndicatorBackground="@color/primary"
+                app:cpb_textIdle="读id"/>
+
+            <com.example.lv.progressbutton.CircularProgressButton
+                android:id="@+id/read_card_view"
+                style="@style/CircularProgressButtonTheme"
+                android:layout_gravity="center"
+                app:cpb_cornerRadius="5dp"
+                android:layout_marginLeft="20dp"
+                app:cpb_paddingProgress="10dp"
+                app:cpb_textComplete="成功"
+                app:cpb_textError="失败"
+                app:cpb_colorIndicatorBackground="@color/primary"
+                app:cpb_textIdle="读身份证"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

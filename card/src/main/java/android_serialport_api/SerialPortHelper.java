@@ -41,7 +41,7 @@ public class SerialPortHelper implements SerialPortPath {
         }
         if (portMap.get(path) == null) {
             try {
-                SerialPort serialPort = new SerialPort(new File(path), baudrate, 0);
+                SerialPort serialPort = new SerialPort(path, baudrate, 0);
                 portMap.put(path, serialPort);
                 return serialPort;
             } catch (IOException e) {
@@ -65,6 +65,16 @@ public class SerialPortHelper implements SerialPortPath {
             serialPort.closeAll();
             portMap.remove(path);
         }
+    }
+
+    /**
+     * 重启串口
+     *
+     * @param serialPort 串口对象
+     */
+    public static void reStart(SerialPort serialPort) {
+        serialPort.close();
+        serialPort = getSerialPort(serialPort.getBaudrate(), serialPort.getPath(), true);
     }
 
 }

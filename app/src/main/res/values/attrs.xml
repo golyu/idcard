@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FormEditText">
+        <attr name="testType">
+            <!--正则表达式-->
+            <enum name="regexp" value="0" />
+            <!-- 数字 -->
+            <enum name="numeric" value="1" />
+            <!-- 英文 -->
+            <enum name="alpha" value="2" />
+            <!--数字和英文-->
+            <enum name="alphaNumeric" value="3" />
+            <!--邮箱-->
+            <enum name="email" value="4" />
+            <!--信用卡-->
+            <enum name="creditCard" value="5" />
+            <!--手机-->
+            <enum name="phone" value="6" />
+            <!--域名-->
+            <enum name="domainName" value="7" />
+            <!--ip地址-->
+            <enum name="ipAddress" value="8" />
+            <!--url地址-->
+            <enum name="webUrl" value="9" />
+            <!--不验证-->
+            <enum name="nocheck" value="10" />
+            <!---->
+            <enum name="custom" value="11" />
+            <!--人名-->
+            <enum name="personName" value="12" />
+            <!--全名-->
+            <enum name="personFullName" value="13" />
+            <!--日期-->
+            <enum name="date" value="14" />
+            <!--数值范围-->
+            <enum name="numericRange" value="15" />
+        </attr>
+        <attr name="testErrorString" format="string" />
+        <attr name="emptyErrorString" format="string" />
+        <attr name="customRegexp" format="string" />
+        <attr name="customFormat" format="string" />
+        <attr name="emptyAllowed" format="boolean" />
+        <attr name="classType" format="string" />
+        <attr name="minNumber" format="integer" />
+        <attr name="maxNumber" format="integer" />
+    </declare-styleable>
+
+
+    <declare-styleable name="RippleView">
+        <attr name="rippleButtonColor" format="color" />
+        <attr name="alphaFactor" format="float" />
+        <attr name="hover" format="boolean" />
+    </declare-styleable>
+</resources>

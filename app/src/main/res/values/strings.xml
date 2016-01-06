@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">建档器检测程序</string>
+    <string name="title_activity_read_card">建档器检测程序</string>
+
+    <string name="error_only_numeric_digits_allowed">Only numeric digits are allowed.</string>
+    <string name="error_only_numeric_digits_range_allowed">Only numeric digits within the range %1$s - %2$s are allowed.</string>
+    <string name="error_this_field_cannot_contain_special_character">This field cannot contain any special character</string>
+    <string name="error_only_standard_letters_are_allowed">Only standard letters are allowed</string>
+    <string name="error_field_must_not_be_empty">The field must not be empty</string>
+    <string name="error_email_address_not_valid">Email address not valid</string>
+    <string name="error_creditcard_number_not_valid">Credit card number is not valid</string>
+    <string name="error_phone_not_valid">Phone number not valid</string>
+    <string name="error_domain_not_valid">Domain name not valid</string>
+    <string name="error_ip_not_valid">IP Address not valid</string>
+    <string name="error_url_not_valid">Web Url is not valid</string>
+    <string name="error_notvalid_personname">Not a valid first or last name.</string>
+    <string name="error_notvalid_personfullname">Not a valid full name.</string>
+    <string name="error_date_not_valid">Format not valid</string>
+
+    <string name="title_activity_abstract">AbstractActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_work">WorkActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_setting">SettingActivity</string>
+    <string name="title_activity_read">ReadActivity</string>
+    <string name="login">login</string>
+    <string name="register">register</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="cancel">cancel</string>
+    <string name="upload">upload</string>
+    <string name="close">close</string>
+
+</resources>

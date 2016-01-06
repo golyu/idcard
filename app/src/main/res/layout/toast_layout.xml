@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_gravity="center"
+              android:gravity="center"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="250dp"
+        android:layout_height="45dp"
+        android:background="@drawable/toast_title"
+        android:gravity="center"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="提示"
+        android:textColor="@android:color/white"
+        android:textSize="25sp"/>
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="250dp"
+        android:layout_height="150dp"
+        android:background="@drawable/toast_content"
+        android:gravity="center"
+        android:text="内容"
+        android:textColor="@color/primary"
+        android:textSize="23sp"
+        />
+</LinearLayout>

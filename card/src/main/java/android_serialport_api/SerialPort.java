@@ -38,17 +38,40 @@ public class SerialPort {
     private FileDescriptor mFd;
     private FileInputStream mFileInputStream;
     private FileOutputStream mFileOutputStream;
+    private String serialportPath;
+    private int baudrate;
+
+    /**
+     * 得到串口的路径
+     *
+     * @return　串口路径
+     */
+    public String getPath() {
+        return serialportPath;
+    }
+
+    /**
+     * 得到串口波特率
+     *
+     * @return 波特率
+     */
+    public int getBaudrate() {
+        return baudrate;
+    }
 
     /**
      * 构造函数
      *
-     * @param device   指定路径创建的文件流
-     * @param baudrate 波特率
-     * @param flags    标记
+     * @param serialportPath 指定的串口
+     * @param baudrate       波特率
+     * @param flags          标记
      * @throws SecurityException 安全异常
      * @throws IOException       io异常
      */
-    protected SerialPort(File device, int baudrate, int flags) throws SecurityException, IOException {
+    protected SerialPort(String serialportPath, int baudrate, int flags) throws SecurityException, IOException {
+        this.serialportPath = serialportPath;
+        this.baudrate = baudrate;
+        File device = new File(serialportPath);
         /* Check access permission */
         if (!device.canRead() || !device.canWrite()) {
             try {

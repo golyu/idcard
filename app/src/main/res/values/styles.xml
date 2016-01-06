@@ -1,0 +1,149 @@
+<resources>
+
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <!--导航栏底色-->
+        <item name="colorPrimary">@color/primary_dark</item>
+        <!--状态栏底色-->
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <!--导航栏上的标题颜色-->
+        <item name="android:textColorPrimary">@color/icons</item>
+        <!--Activity窗口的颜色-->
+        <item name="android:windowBackground">@color/material_blue_grey_800</item>
+        <!--按钮选中或者点击获得焦点后的颜色-->
+        <item name="colorAccent">@color/primary_dark</item>
+        <!--和 colorAccent相反，正常状态下按钮的颜色-->
+        <item name="colorControlNormal">@color/primary</item>
+        <!--Button按钮正常状态颜色-->
+        <item name="colorButtonNormal">@color/accent_material_light</item>
+        <!--EditText 输入框中字体的颜色-->
+        <item name="editTextColor">@android:color/white</item>
+    </style>
+
+    <!-- Base textview theme -->
+    <style name="BaseTextViewTheme">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">25sp</item>
+    </style>
+    <!--Title textview theme-->
+    <style name="TitleTextViewTheme" parent="BaseTextViewTheme">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <!-- 注册界面提示-->
+    <style name="HintTextViewTheme" parent="BaseTextViewTheme">
+        <item name="android:textSize">21sp</item>
+        <item name="android:layout_gravity">right</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+
+    <!--　Base edittext theme-->
+    <style name="BaseEditTheme">
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:imeOptions">actionDone</item>
+    </style>
+    <!-- LoginActivity >> EditText Theme-->
+    <style name="LoginEditTheme" parent="BaseEditTheme"></style>
+    <!--注册界面填写框-->
+    <style name="ContentEditTheme" parent="BaseEditTheme">
+        <item name="android:background">@drawable/edittext</item>
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/primary_dark</item>
+        <item name="android:textColorHint">@color/divider</item>
+    </style>
+
+    <!--Base ripplebutton theme-->
+    <style name="BaseRippleButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/commond_button</item>
+        <item name="android:gravity">center</item>
+        <item name="android:shadowColor">@color/icons</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">0</item>
+        <item name="android:shadowRadius">5</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">23sp</item>
+    </style>
+    <!--LoginActivity >> ripplebutton theme-->
+    <style name="LoginRippleButtonTheme" parent="BaseRippleButton"></style>
+
+    <!--ReadCardActivity>>CircularProgressButton theme-->
+    <style name="CircularProgressButtonTheme" parent="BaseRippleButton">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">41dp</item>
+    </style>
+
+    <!--ReadCardActivity >> LocalInfoFragment >> ripplebutton theme-->
+    <style name="ReadCardFragmentRippleButtonTheme" parent="BaseRippleButton">
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
+    </style>
+    <!--RegisterAcitivyt-->
+    <style name="RegisterRippleButtonTheme" parent="BaseRippleButton">
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+    <!--ReadCardActivity >> ripplebutton theme-->
+    <style name="ReadCardRippleButtonTheme" parent="BaseRippleButton">
+        <item name="android:textSize">19sp</item>
+        <item name="android:layout_width">90dp</item>
+    </style>
+    <!--SettingActivity >> ripplebutton theme-->
+    <style name="SettingRippleButtonTheme" parent="BaseRippleButton">
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_width">110dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!--全局tabrow样式-->
+    <style name="CommondTabRowTheme">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <!--login界面tabrow样式-->
+    <style name="LoginTabRowTheme" parent="CommondTabRowTheme">
+        <item name="android:layout_marginTop">20dp</item>
+    </style>
+
+    <!--register界面tabrow样式-->
+    <style name="RegisterTabRowTheme" parent="CommondTabRowTheme">
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+
+    <style name="dialogFragment" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/dialog_background</item>
+    </style>
+
+    <style name="infoTextStyle">
+        <item name="android:color">#000000</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+</resources>

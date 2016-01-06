@@ -1,1 +1,1 @@
-include ':card', ':simple'
+include ':card', ':simple',':app',':progressbutton'

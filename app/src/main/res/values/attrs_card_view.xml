@@ -1,0 +1,8 @@
+<resources>
+    <declare-styleable name="CardView">
+        <attr name="cardString" format="string" />
+        <attr name="cardDimension" format="dimension" />
+        <attr name="cardColor" format="color" />
+        <attr name="cardDrawable" format="reference" />
+    </declare-styleable>
+</resources>

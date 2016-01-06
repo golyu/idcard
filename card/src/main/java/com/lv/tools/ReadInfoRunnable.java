@@ -121,20 +121,22 @@ public class ReadInfoRunnable extends ReadRunnableControl {
      */
     private boolean samReset() throws IOException {
         Log.v("card", "开始复位");
-        byte[] result = sendCmd(Cmd.SAM_RESET_CMD, Cmd.SAM_RESET_SUCCESS_CMD.length);
+        byte[] result = sendCmd(Cmd.SAM_RESET_CMD, DataType.SHORT);
         if (Arrays.equals(result, Cmd.SAM_RESET_SUCCESS_CMD)) {
-            Log.v("card", "复位成功"+ConvertUtil.byte2HexString(result));
+            Log.v("card", "复位成功" + ConvertUtil.byte2HexString(result));
             try {
-                Thread.sleep(1000);
+                Thread.sleep(300);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             return true;
         } else {
-            Log.v("card", "复位失败"+ConvertUtil.byte2HexString(result));
+            Log.v("card", "复位失败" + ConvertUtil.byte2HexString(result));
             return false;
         }
     }
+
+    int findCount = 0;
 
     /**
      * 寻卡
@@ -144,12 +146,20 @@ public class ReadInfoRunnable extends ReadRunnableControl {
      */
     private boolean findCard() throws IOException {
         Log.v("card_id", "开始寻卡");
-        byte[] result = sendCmd(Cmd.FIND_CARD_CMD, Cmd.FIND_CARD_SUCCESS_CMD.length);
+        readCardStart = System.currentTimeMillis();
+        byte[] result = sendCmd(Cmd.FIND_CARD_CMD, DataType.SHORT);
         Log.v("card_id", ConvertUtil.byte2HexString(result));
         if (Arrays.equals(result, Cmd.FIND_CARD_SUCCESS_CMD)) {
+            findCount = 0;
             return true;
         } else {
-            samReset();
+            if (findCount > 20) {
+                samReset();
+                findCount = 0;
+            } else {
+                findCount++;
+            }
+
             return false;
         }
     }
@@ -162,13 +172,15 @@ public class ReadInfoRunnable extends ReadRunnableControl {
      */
     private boolean selectCard() throws IOException {
 //        Log.v("card_id", "开始选卡");
-        byte[] result = sendCmd(Cmd.SELECT_CARD_CMD, Cmd.SELECT_CARD_SUCCESS_CMD.length);
+        byte[] result = sendCmd(Cmd.SELECT_CARD_CMD, DataType.SHORT);
 //        Log.v("card_id", ConvertUtil.byte2HexString(result));
         if (Arrays.equals(result, Cmd.SELECT_CARD_SUCCESS_CMD))
             return true;
         else
             return false;
     }
+
+    long readCardStart;
 
     /**
      * 读卡
@@ -177,24 +189,38 @@ public class ReadInfoRunnable extends ReadRunnableControl {
      * @throws IOException
      */
     private byte[] readCard() throws IOException {
-//        Log.v("card_id", "开始读卡");
-        byte[] result = sendCmd(Cmd.READ_CARD_INFO_CMD, 2000);
+        Log.v("card_id", "开始读卡");
+
+        byte[] result = sendCmd(Cmd.READ_CARD_INFO_CMD, DataType.LONG);
 //        Log.v("card_id", ConvertUtil.byte2HexString(result));
+
+        Log.v("card_time_1", System.currentTimeMillis() - readCardStart + "");
         return result;
     }
 
     /**
-     * 写入命令，收集返回数据
+     * 数据类型，长或者短
+     */
+    enum DataType {
+        LONG, SHORT
+    }
+
+    /**
+     * 写入选卡命令，收集返回数据
      *
-     * @param cmd         命令
-     * @param resultLeght 返回结果的长度
+     * @param cmd 命令
      * @return 收集到的数据
      * @throws IOException
      */
-    private synchronized byte[] sendCmd(byte[] cmd, int resultLeght) throws IOException {
+    private synchronized byte[] sendCmd(byte[] cmd, DataType dataType) throws IOException {
+        long timeOut = 1000;
+        int dataExpand = 30;
+        if (dataType == DataType.LONG) {
+            timeOut = 1500;
+            dataExpand = 1300;
+        }
 
-        byte[] data = new byte[resultLeght];
-        byte[] temp = new byte[resultLeght];
+        byte[] temp = new byte[7];
 
         /**
          * 清理串口数据
@@ -202,49 +228,72 @@ public class ReadInfoRunnable extends ReadRunnableControl {
         clearSerialPortData(serialPort.getInputStream());
 
         /**
-         * 写入寻卡命令
+         * 写入命令
          */
         serialPort.getOutputStream().write(cmd);
-        try {
-            Thread.sleep((long) (Math.random()*200+300));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        long readStartTime = System.currentTimeMillis();
-
-        //data的下标
-        int index = 0;
-//        Log.v("card", "开始读");
-//        Log.v("card", "" + serialPort.getInputStream().available());
-        while (serialPort.getInputStream().available() > 0 || (index < 7) || (index > 7 && (index < data[5] * 256 +
-                data[6] + 7))) {
-//            try {
-//                Thread.sleep(200);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-            long take = System.currentTimeMillis() - readStartTime;
-            if ((take > 3000) || ((index > 5) && (data[0] != (byte) 0xAA || data[1] != (byte) 0xAA || data[2] !=
-                    (byte) 0xAA || data[3] != (byte)
-                    0x96 || data[4] != (byte) 0x69))) {
-//                Log.v("card", "进入eroor" + take + ">>" + ConvertUtil.byte2HexString(data));
-                return Cmd.ERROR_UNKOWN_CMD;
+        long selectStartTime = System.currentTimeMillis();
+        while (serialPort.getInputStream().available() < 7 && (System.currentTimeMillis() - selectStartTime) < timeOut) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+        }
+//        Log.v("card_lenght", serialPort.getInputStream().available() + "");
+        if (serialPort.getInputStream().read(temp) != temp.length
+                || temp[0] != (byte) 0xAA
+                || temp[1] != (byte) 0xAA
+                || temp[2] != (byte) 0xAA
+                || temp[3] != (byte) 0x96
+                || temp[4] != (byte) 0x69) {
+            clearSerialPortData(serialPort.getInputStream());
+            return Cmd.ERROR_UNKOWN_CMD;
+        }
+        int dataSize = temp[5] * 256 + temp[6];
+//        Log.v("card_temp", ConvertUtil.byte2HexString(temp) + ">>>" + dataSize);
+        // 返回的数据
+        byte[] data = new byte[temp.length + dataSize + dataExpand];
+        System.arraycopy(temp, 0, data, 0, temp.length);
+        int dataCount = 0;
+        while (dataCount < dataSize && (System.currentTimeMillis() - selectStartTime) < timeOut) {
             if (serialPort.getInputStream().available() > 0) {
-                int dataSize = serialPort.getInputStream().read(temp);
-                for (int i = 0; i < dataSize; i++) {
-                    if (index < data.length) {
-                        data[index] = temp[i];
-                        index++;
-                    }
-                }
+                int len = serialPort.getInputStream().read(data, temp.length + dataCount, dataExpand);
+                dataCount += len;
+                // Log.e("commandReader()", "once Len="+len);
             }
+            // Thread.sleep(10);
         }
-//        System.out.println("card 出while");
-
-        byte[] result = new byte[index];
+        Log.v("card_data", dataCount + "");
+        if (dataCount < dataSize || dataSize < 4) {
+//            Log.v("card", "接收剩余数据超时，数据长度：" + dataSize + ",接收数据长度：" + dataCount + "\r\n");
+            clearSerialPortData(serialPort.getInputStream());
+            return Cmd.ERROR_UNKOWN_CMD;
+        }
+        clearSerialPortData(serialPort.getInputStream());
+        byte[] result = new byte[7 + dataSize];
         System.arraycopy(data, 0, result, 0, result.length);
+        /**
+         * 验证校验和
+         */
+        if (xorchk(data) != 0) {
+//            Log.v("card_xorchk", "校验和没过？");
+            return Cmd.ERROR_UNKOWN_CMD;
+        }
+//        Log.v("card_data", ConvertUtil.byte2HexString(result) + "--");
         return result;
     }
 
+    /**
+     * 验证校验和
+     *
+     * @param data
+     * @return
+     */
+    private byte xorchk(byte[] data) {
+        byte chk = 0;
+        for (int i = 5; i < data.length; i++) {
+            chk ^= data[i];
+        }
+        return chk;
+    }
 }

@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.os.RemoteException;
+import android.util.Log;
 
 import com.synjones.bluetooth.DecodeWlt;
 
@@ -27,6 +28,7 @@ public class ParseCardInfo {
      * @throws Exception 解析错误的异常
      */
     public static IDCard parse(byte[] readResult) throws Exception {
+        long startTime = System.currentTimeMillis();
         IDCard idCard = new IDCard();
         short textlen = (short) (readResult[0] * 256 + readResult[1]);
         short wltlen = (short) (readResult[2] * 256 + readResult[3]);
@@ -74,6 +76,7 @@ public class ParseCardInfo {
             idCard.setWlt(bmpBytes);
             idCard.setPhotoBase64(BitmapBase64.bitmapToBase64(bmp));
         }
+        Log.v("card_time",System.currentTimeMillis()-startTime+"");
         return idCard;
     }
 

@@ -2,12 +2,14 @@ package com.lv.tools;
 
 import android.util.Log;
 
+import com.gpio.ex.PowerOperate;
 import com.lv.tools.exceptions.SerialPortException;
 
 import java.io.IOException;
 import java.util.Arrays;
 
 import android_serialport_api.SerialPort;
+import android_serialport_api.SerialPortHelper;
 
 /**
  * @author lvzhongyi
@@ -17,7 +19,7 @@ import android_serialport_api.SerialPort;
  */
 public class ReadInfoRunnable extends ReadRunnableControl {
     private long startTime;//开始时间
-    private SerialPort serialPort;  //串口对象
+    private  SerialPort serialPort;  //串口对象
     private final ReadInfoResult readInfoResult;    //返回结果对象
     private int outTime;    //超时时间，秒
 
@@ -91,6 +93,7 @@ public class ReadInfoRunnable extends ReadRunnableControl {
                                 IDCard idCard = ParseCardInfo.parse(waitParse);
                                 setStop();
                                 readInfoResult.onSuccess(idCard);
+                                samReset();
 //                                Log.v("card_id", "" + ConvertUtil.byte2HexString(result));
                                 return;
                             } catch (Exception e) {
@@ -108,6 +111,7 @@ public class ReadInfoRunnable extends ReadRunnableControl {
                 }
             } catch (IOException e) {
                 readInfoResult.onFailure(ReadInfoResult.ERROR_UNKNOWN);
+                return;
             }
 
         }
@@ -124,11 +128,19 @@ public class ReadInfoRunnable extends ReadRunnableControl {
         byte[] result = sendCmd(Cmd.SAM_RESET_CMD, DataType.SHORT);
         if (Arrays.equals(result, Cmd.SAM_RESET_SUCCESS_CMD)) {
             Log.v("card", "复位成功" + ConvertUtil.byte2HexString(result));
+            PowerOperate.getInstance().disableGPIO();
             try {
                 Thread.sleep(300);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            PowerOperate.getInstance().enableRfInfo();
+//            try {
+//                Thread.sleep(500);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            SerialPortHelper.reStart(serialPort);
             return true;
         } else {
             Log.v("card", "复位失败" + ConvertUtil.byte2HexString(result));
@@ -150,16 +162,17 @@ public class ReadInfoRunnable extends ReadRunnableControl {
         byte[] result = sendCmd(Cmd.FIND_CARD_CMD, DataType.SHORT);
         Log.v("card_id", ConvertUtil.byte2HexString(result));
         if (Arrays.equals(result, Cmd.FIND_CARD_SUCCESS_CMD)) {
+            Log.v("card_id", "开始寻卡ok");
             findCount = 0;
             return true;
         } else {
+            Log.v("card_id", "开始寻卡失败");
             if (findCount > 20) {
-                samReset();
                 findCount = 0;
+                samReset();
             } else {
                 findCount++;
             }
-
             return false;
         }
     }
@@ -212,25 +225,26 @@ public class ReadInfoRunnable extends ReadRunnableControl {
      * @return 收集到的数据
      * @throws IOException
      */
-    private synchronized byte[] sendCmd(byte[] cmd, DataType dataType) throws IOException {
+    private byte[] sendCmd(byte[] cmd, DataType dataType) throws IOException {
         long timeOut = 1000;
         int dataExpand = 30;
         if (dataType == DataType.LONG) {
-            timeOut = 1500;
+            timeOut = 1800;
             dataExpand = 1300;
         }
 
         byte[] temp = new byte[7];
-
+        Log.v("card_id", "开始寻卡2");
         /**
          * 清理串口数据
          */
         clearSerialPortData(serialPort.getInputStream());
-
+        Log.v("card_id", "开始寻卡3");
         /**
          * 写入命令
          */
         serialPort.getOutputStream().write(cmd);
+        Log.v("card_id", "开始寻卡4");
         long selectStartTime = System.currentTimeMillis();
         while (serialPort.getInputStream().available() < 7 && (System.currentTimeMillis() - selectStartTime) < timeOut) {
             try {
@@ -239,7 +253,12 @@ public class ReadInfoRunnable extends ReadRunnableControl {
                 e.printStackTrace();
             }
         }
-//        Log.v("card_lenght", serialPort.getInputStream().available() + "");
+        Log.v("card_lenght", serialPort.getInputStream().available() + "");
+        if (serialPort.getInputStream().available()<10){
+            clearSerialPortData(serialPort.getInputStream());
+            return Cmd.ERROR_UNKOWN_CMD;
+        }
+
         if (serialPort.getInputStream().read(temp) != temp.length
                 || temp[0] != (byte) 0xAA
                 || temp[1] != (byte) 0xAA
@@ -250,7 +269,7 @@ public class ReadInfoRunnable extends ReadRunnableControl {
             return Cmd.ERROR_UNKOWN_CMD;
         }
         int dataSize = temp[5] * 256 + temp[6];
-//        Log.v("card_temp", ConvertUtil.byte2HexString(temp) + ">>>" + dataSize);
+        Log.v("card_temp", ConvertUtil.byte2HexString(temp) + ">>>" + dataSize);
         // 返回的数据
         byte[] data = new byte[temp.length + dataSize + dataExpand];
         System.arraycopy(temp, 0, data, 0, temp.length);
@@ -265,7 +284,7 @@ public class ReadInfoRunnable extends ReadRunnableControl {
         }
         Log.v("card_data", dataCount + "");
         if (dataCount < dataSize || dataSize < 4) {
-//            Log.v("card", "接收剩余数据超时，数据长度：" + dataSize + ",接收数据长度：" + dataCount + "\r\n");
+            Log.v("card", "接收剩余数据超时，数据长度：" + dataSize + ",接收数据长度：" + dataCount + "\r\n");
             clearSerialPortData(serialPort.getInputStream());
             return Cmd.ERROR_UNKOWN_CMD;
         }
@@ -276,10 +295,10 @@ public class ReadInfoRunnable extends ReadRunnableControl {
          * 验证校验和
          */
         if (xorchk(data) != 0) {
-//            Log.v("card_xorchk", "校验和没过？");
+            Log.v("card_xorchk", "校验和没过？");
             return Cmd.ERROR_UNKOWN_CMD;
         }
-//        Log.v("card_data", ConvertUtil.byte2HexString(result) + "--");
+        Log.v("card_data", ConvertUtil.byte2HexString(result) + "--");
         return result;
     }
 

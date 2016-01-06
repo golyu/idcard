@@ -3,6 +3,7 @@ package android_serialport_api;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Properties;
 
 /**
  * @author lvzhongyi
@@ -37,7 +38,10 @@ public class SerialPortHelper implements SerialPortPath {
      */
     public static SerialPort getSerialPort(int baudrate, String path, boolean isNew) {
         if (isNew) {
-            portMap.remove(path);
+            if (portMap.get(path) != null) {
+                portMap.get(path).closeAll();
+                portMap.remove(path);
+            }
         }
         if (portMap.get(path) == null) {
             try {
@@ -72,9 +76,8 @@ public class SerialPortHelper implements SerialPortPath {
      *
      * @param serialPort 串口对象
      */
-    public static void reStart(SerialPort serialPort) {
-        serialPort.close();
-        serialPort = getSerialPort(serialPort.getBaudrate(), serialPort.getPath(), true);
+    public static SerialPort reStart(SerialPort serialPort) {
+        return getSerialPort(serialPort.getBaudrate(), serialPort.getPath(), true);
     }
 
 }
